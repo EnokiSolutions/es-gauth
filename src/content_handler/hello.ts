@@ -8,6 +8,7 @@ export function helloHandler(ctx: ctxType): Promise<void> {
 
   ctx.res.statusCode = 200;
   ctx.res.setHeader('Content-Type', 'text/plain');
+  console.log(ctx.user);
   ctx.res.end("Hello");
   return resolvedVoid;
 }
