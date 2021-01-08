@@ -1,42 +1,24 @@
-import {contentHandlerType, ctxType, urlType} from './server.type';
+// istanbul ignore file
+// -- bootstrap
+
+import {ctxType, handlerType} from './server.type';
 import {helloHandler} from './content_handler/hello';
 import {IncomingMessage, ServerResponse} from 'http';
 import {sessionInit, sessionSet} from './session';
-import {gauthContinueCheck, gauthInit} from './gauth';
+import {gauthContinue, gauthInit} from './gauth';
 import {userSet} from './user';
+import {createCtx} from './create_ctx';
 
-const contentHandlerArray: contentHandlerType[] = [
+const contentHandlerArray: handlerType[] = [
   helloHandler,
 ];
 
-function parseUrl(rawUrl: string): urlType {
-  const m = rawUrl.match(/^\/?(?<path>([^\/?]\/?)*)(\?(?<params>.*$))?/);
-  const path = '/' + m?.groups?.path || '';
-  let params: string[][] = [];
-  if (m?.groups?.params) {
-    params = m?.groups?.params.split('&').map(p => {
-      const x = p.split('=');
-      return [decodeURIComponent(x[0] || ''), decodeURIComponent(x[1] || '')];
-    });
-  }
-  return {path, params};
-}
+const authHandlerArray: handlerType[] = [
+  gauthInit,
+  gauthContinue,
+];
 
-function parseCookie(cookie: string | undefined): string[][] {
-  if (!cookie) {
-    return [];
-  }
-  return cookie.split(';').map(p => {
-    const x = p.split('=');
-    return [decodeURIComponent(x[0] || ''), decodeURIComponent(x[1] || '')];
-  });
-}
-
-function createCtx(req: IncomingMessage, res: ServerResponse): ctxType {
-  const url = parseUrl(req?.url?.toString() || '/');
-  const cookie = parseCookie(req.headers.cookie);
-  return {req, res, url, session: {}, user: undefined, sessionId: '', cookie};
-}
+//----------------------
 
 function handleNotFound(res: ServerResponse) {
   res.statusCode = 404;
@@ -46,6 +28,15 @@ function handleNotFound(res: ServerResponse) {
 
 async function handleContent(ctx: ctxType) {
   for (const handler of contentHandlerArray) {
+    await handler(ctx);
+    if (ctx.res.writableEnded) {
+      return;
+    }
+  }
+}
+
+async function handleAuth(ctx: ctxType) {
+  for (const handler of authHandlerArray) {
     await handler(ctx);
     if (ctx.res.writableEnded) {
       return;
@@ -68,12 +59,8 @@ export async function requestHandler(req: IncomingMessage, res: ServerResponse):
 
     // REDIRECTIONS ALLOWED
 
-    // handle auth
-    if (await gauthInit(ctx)) {
-      return;
-    }
-
-    if (await gauthContinueCheck(ctx)) {
+    await handleAuth(ctx);
+    if (res.writableEnded) {
       return;
     }
 

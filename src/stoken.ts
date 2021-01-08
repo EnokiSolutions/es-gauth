@@ -8,6 +8,8 @@ export function generateSecureToken(secret: string): string {
   return s + '|' + x.digest('hex');
 }
 
+export type generateSecureTokenType = typeof generateSecureToken;
+
 export function verifySecureToken(token: string | undefined, secret: string): string | undefined {
   if (!token) {
     return;
@@ -19,3 +21,5 @@ export function verifySecureToken(token: string | undefined, secret: string): st
     return s;
   }
 }
+
+export type verifySecureTokenType = typeof verifySecureToken;

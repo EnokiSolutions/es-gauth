@@ -2,6 +2,7 @@ import {pad} from './pad';
 import {randomBytes} from 'crypto';
 
 let lastTime = 0;
+
 const rhc = function rhc(n: number): string {
   return randomBytes(n).toString('hex');
 };
@@ -20,8 +21,8 @@ export function tuidCtor(): string {
   const b = ts.substr(8, 4);
   const c = ts.substr(12, 3);
   const d = ts.substr(15, 1);
-  const e = rhc(2);
-  const f = rhc(12);
+  const e = rhc(1);
+  const f = rhc(6);
   return `${a}-${b}-4${c}-8${d}${e}-${f}`;
 }
 
@@ -33,6 +34,7 @@ export function isTuid(value: string): boolean {
 
 export const tuidZero = '00000000-0000-0000-0000-000000000000';
 
+// istanbul ignore next
 export function tuidCtorForTesting(start = 0): () => string {
   return () => {
     const h = pad('000000000000', (start++).toString(16));

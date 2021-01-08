@@ -8,6 +8,6 @@ export function helloHandler(ctx: ctxType): Promise<void> {
 
   ctx.res.statusCode = 200;
   ctx.res.setHeader('Content-Type', 'text/plain');
-  ctx.res.end(`Hello\nsessionId:\n${ctx.sessionId}\nsession:\n${JSON.stringify(ctx.session, undefined, 2)}\nuser:\n${JSON.stringify(ctx.user, undefined, 2)}`);
+  ctx.res.end("Hello");
   return resolvedVoid;
 }

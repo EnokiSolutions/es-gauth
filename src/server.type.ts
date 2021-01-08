@@ -2,7 +2,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 
 export type urlType = {
   path: string,
-  params: string[][],
+  params: [string,string][],
 }
 export type ctxType = {
   sessionId: string;
@@ -10,8 +10,8 @@ export type ctxType = {
   res: ServerResponse,
   url: urlType,
   session: sessionType,
-  user: userType | undefined,
-  cookie: string[][],
+  user?: userType,
+  cookie: [string,string][],
 }
 type userType = {
   userId: string;
@@ -43,4 +43,4 @@ export type sessionType = {
 export type sessionStoreType = {
   [sessionId: string]: sessionType;
 };
-export type contentHandlerType = (ctx: ctxType) => Promise<void>;
+export type handlerType = (ctx: ctxType) => Promise<void>;

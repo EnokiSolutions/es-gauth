@@ -1,3 +1,5 @@
+// istanbul ignore file
+
 import {tuidCtor} from './tuid';
 
 export const settings = {
@@ -5,6 +7,7 @@ export const settings = {
   port: +(process.env.PORT || '3000'),
   schema: 'http://',
   sessionSecret: process.env.SESSION_SECRET || tuidCtor(),
+  appUrl: '/hello',
   google: {
     id: process.env.GOOGLE_AUTH_CLIENT_ID || '',
     secret: process.env.GOOGLE_AUTH_CLIENT_SECRET || '',

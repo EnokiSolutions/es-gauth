@@ -1,5 +1,5 @@
-export function toUrlParam(paramArray: string[][]) {
+export function toUrlParam(paramArray: [string, unknown][]) {
   return paramArray.map(
-    (e) => `${encodeURIComponent(e[0])}=${encodeURIComponent(e[1])}`,
+    (e) => `${encodeURIComponent(e[0])}=${encodeURIComponent(`${e[1]}`)}`,
   ).join('&');
 }

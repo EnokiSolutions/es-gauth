@@ -1,3 +1,5 @@
+// istanbul ignore file
+// -- bootstrap
 
 let exitResolve: (value: unknown) => void | undefined;
 export const exitPromise = new Promise((r: (value: unknown) => void) => {

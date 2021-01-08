@@ -1,3 +1,6 @@
+// istanbul ignore file
+// -- will be replaced with DB based session storage
+
 import {ctxType, sessionStoreType, sessionType} from './server.type';
 import {settings} from './settings';
 import {resolvedVoid} from './resolved';

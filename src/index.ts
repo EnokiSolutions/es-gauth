@@ -1,10 +1,12 @@
+// istanbul ignore file
+// -- bootstrap
+
 import {main} from './main';
 import {createServer} from 'http';
 import {settings} from './settings';
 import {exitPromise} from './exit';
 import {requestHandler} from './request_handler';
 
-// istanbul ignore next
 async function server(): Promise<void> {
   const server = createServer(requestHandler);
 
@@ -15,5 +17,4 @@ async function server(): Promise<void> {
   await exitPromise;
 }
 
-// istanbul ignore next
 main(server);

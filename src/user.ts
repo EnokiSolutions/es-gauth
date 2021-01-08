@@ -1,3 +1,6 @@
+// istanbul ignore file
+// -- will be replaced with DB based user storage
+
 import {ctxType, gauthUserInfoType, userStoreType} from './server.type';
 import {tuidCtor} from './tuid';
 import {resolvedVoid} from './resolved';
@@ -23,6 +26,9 @@ export async function vivifyUser({
   }
   return u.userId;
 }
+
+export type vivifyUserType = typeof vivifyUser;
+
 
 export function userSet(ctx: ctxType): Promise<void> {
   if (ctx.session.userId) {

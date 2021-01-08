@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
+// istanbul ignore file
+// -- bootstrap
 
-/* istanbul ignore next */
+
 export const main = ((function mainCtor() {
   process.on(
     "unhandledRejection",
     (error: Error) => {
-      /* istanbul ignore next */
       console.error(
         `unhandledRejection: ${error}`,
         error.stack,
