@@ -1,11 +1,10 @@
 import {ctxType, gauthUserInfoType, handlerType} from './server.type';
-import {settings} from './settings';
 import {resolvedVoid} from './resolved';
-import {generateSecureToken, generateSecureTokenType, verifySecureToken, verifySecureTokenType} from './stoken';
+import {generateSecureTokenType, verifySecureTokenType} from './stoken';
 import {toUrlParam} from './to_url_param';
 import {kvpArrayToObject} from './kvp_array_to_object';
-import axios, {AxiosStatic} from 'axios';
-import {vivifyUser, vivifyUserType} from './user';
+import {AxiosStatic} from 'axios';
+import {vivifyUserType} from './user';
 
 export function gauthInitCtor(
   settings: {
@@ -47,8 +46,6 @@ export function gauthInitCtor(
 
   return gauthInit;
 }
-
-export const gauthInit = gauthInitCtor(settings, generateSecureToken);
 
 export function gauthContinueCtor(
   settings: {
@@ -107,6 +104,3 @@ export function gauthContinueCtor(
 
   return gauthContinue;
 }
-
-export const gauthContinue = gauthContinueCtor(settings, verifySecureToken, vivifyUser, axios);
-

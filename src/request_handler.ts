@@ -4,10 +4,19 @@
 import {ctxType, handlerType} from './server.type';
 import {helloHandler} from './content_handler/hello';
 import {IncomingMessage, ServerResponse} from 'http';
-import {sessionInit, sessionSet} from './session';
-import {gauthContinue, gauthInit} from './gauth';
-import {userSet} from './user';
+import {sessionInitCtor, sessionSetCtor} from './session';
+import {gauthContinueCtor, gauthInitCtor} from './gauth';
+import {userSet, vivifyUser} from './user';
 import {createCtx} from './create_ctx';
+import {settings} from './settings';
+import {generateSecureToken, verifySecureToken} from './stoken';
+import axios from 'axios';
+
+
+const gauthInit = gauthInitCtor(settings, generateSecureToken);
+const gauthContinue = gauthContinueCtor(settings, verifySecureToken, vivifyUser, axios);
+const sessionInit = sessionInitCtor();
+const sessionSet = sessionSetCtor(settings)
 
 const contentHandlerArray: handlerType[] = [
   helloHandler,
