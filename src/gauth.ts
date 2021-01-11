@@ -19,7 +19,7 @@ export function gauthInitCtor(
 ): handlerType {
 
   function gauthInit(ctx: ctxType): Promise<void> {
-    if (ctx.url.path != settings.google.initPath) {
+    if (ctx.url.path !== settings.google.initPath) {
       return resolvedVoid;
     }
     const token = generateSecureToken(settings.sessionSecret);
@@ -62,8 +62,6 @@ export function gauthContinueCtor(
   vivifyUser: vivifyUserType,
   axios: AxiosStatic,
 ): handlerType {
-
-
   function jwtTrustedDecode(data: string) {
     // doesn't check the signature, as we already trust the source.
     return JSON.parse(Buffer.from(data.split('.')[1], 'base64').toString('utf-8'));
@@ -74,7 +72,9 @@ export function gauthContinueCtor(
       return resolvedVoid;
     }
     const {state, code} = kvpArrayToObject(ctx.url.params) as { state: string, code: string };
-    if (!state || !code || !verifySecureToken(state, settings.sessionSecret)) {
+    const stuid = verifySecureToken(state, settings.sessionSecret);
+    // check age of stuid, reject if older than X mins.
+    if (!state || !code || !stuid) {
       ctx.res.statusCode = 400;
       ctx.res.end('Invalid Request');
       return resolvedVoid;

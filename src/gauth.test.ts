@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
+import * as assert from 'assert';
 import {gauthContinueCtor, gauthInitCtor} from './gauth';
 import {gauthUserInfoType} from './server.type';
-import * as assert from 'assert';
 
 const settings = {
   sessionSecret: 'ss',
